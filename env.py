@@ -133,7 +133,7 @@ class RobotEnv(gym.Env):
                 else:
                     reward = -(1/(distance+1)+1) *(1 - angle/(h_fov/2))
             else:
-                if self.distance_prev - angle > 0:
+                if self.distance_prev - distance > 0:
                     reward = 1/(distance+1)
                 else:
                     reward = -(1/(distance+1)+1)
