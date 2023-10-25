@@ -7,7 +7,7 @@ from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.callbacks import CheckpointCallback
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
-from env import RobotEnv
+from env_fix import RobotEnv
 import torch as th 
 import torch.nn as nn
 from stable_baselines3.common.policies import BaseFeaturesExtractor
@@ -29,8 +29,8 @@ from stable_baselines3.common.policies import BaseFeaturesExtractor
 #     def forward(self, observations):
 #         x = observations.permute(0, 3, 1, 2)
 #         return self.cnn(x)
-NUM_ENV = 5
-LOG_DIR = "logs-robot"
+NUM_ENV = 6
+LOG_DIR = "logs-robot-plus"
 os.makedirs(LOG_DIR, exist_ok=True)
 # policy_kwargs = policy_kwargs = dict(
 #     features_extractor_class=CustomCNN,
@@ -85,9 +85,8 @@ def main():
         tensorboard_log=LOG_DIR,
         device="cuda",
     )
-    # model = MaskablePPO.load("trained_models_CNN/ppo_snake_40000000_steps.zip", env=env)
     # Set the save directory
-    save_dir = "trained_models_CNN"
+    save_dir = "trained_models_CNN4"
     os.makedirs(save_dir, exist_ok=True)
 
     checkpoint_interval = 5000  # checkpoint_interval * num_envs = total_steps_per_checkpoint
@@ -100,7 +99,7 @@ def main():
         sys.stdout = log_file
 
         model.learn(
-            total_timesteps=int(200 * 10e4),
+            total_timesteps=int(300 * 10e4),
             callback=[checkpoint_callback]
         )
         env.close()
